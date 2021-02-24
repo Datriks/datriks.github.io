@@ -1,0 +1,51 @@
+I"}<p>library(rvest)
+library(dplyr)</p>
+
+<h2 id="the-webpage"><strong><em>The webpage</em></strong></h2>
+
+<p><img src="/img/posts/web-scraping/myimdbimage.png" alt="IMDB page" /></p>
+
+<h2 id="create-a-var-named-link-and-a-var-page-that-reads-that-link">Create a var named link and a var page that reads that link</h2>
+<p>link =  “https://www.imdb.com/search/title/?title_type=feature&amp;genres=adventure&amp;moviemeter=25000,&amp;sort=user_rating,desc”
+page = read_html(link)</p>
+
+<h2 id="extract-the-name-feature">Extract the name feature</h2>
+<p>name = page %&gt;% 
+  html_nodes(“.lister-item-header a”) %&gt;% 
+  html_text()</p>
+
+<p>name</p>
+<h2 id="extract-the-year">Extract the year</h2>
+<p>year = page %&gt;% 
+  html_nodes(“.text-muted.unbold”) %&gt;% 
+  html_text()</p>
+
+<p>year</p>
+
+<h2 id="extract-the-rating">Extract the rating</h2>
+
+<p>rating = page %&gt;% 
+  html_nodes(“.ratings-imdb-rating strong”) %&gt;% 
+  html_text()</p>
+
+<p>rating</p>
+
+<h2 id="extract-the-sinopsys">Extract the sinopsys</h2>
+
+<p>synopsis = page %&gt;% 
+  html_nodes(“.ratings-bar+ .text-muted”) %&gt;% 
+  html_text()</p>
+
+<p>synopsis
+View(synopsis)</p>
+
+<h2 id="create-a-data-frame">Create a data frame</h2>
+<p>movies = tibble(name, year, rating, synopsis)</p>
+
+<p>View(movies)
+glimpse(movies)</p>
+<h2 id="save-the-data-frame">Save the data frame</h2>
+
+<p>write.csv(movies, “movies-juv.csv”)</p>
+
+:ET

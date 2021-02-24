@@ -1,0 +1,1683 @@
+I"Vš<h2 id="filter-a-data-frame-with-pandas">Filter a Data Frame with Pandas</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="n">stats</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">'D:</span><span class="se">\\</span><span class="s">OneDrive - office365hubs.com</span><span class="se">\\</span><span class="s">.Python for data science</span><span class="se">\\</span><span class="s">Demographic-Data.csv'</span><span class="p">)</span>
+<span class="n">stats</span><span class="p">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s">'CountryName'</span><span class="p">,</span><span class="s">'CountryCode'</span><span class="p">,</span><span class="s">'BirthRate'</span><span class="p">,</span><span class="s">'InternetUsers'</span><span class="p">,</span><span class="s">'IncomeGroup'</span><span class="p">]</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">stats</span><span class="p">.</span><span class="n">head</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>CountryName</th>
+      <th>CountryCode</th>
+      <th>BirthRate</th>
+      <th>InternetUsers</th>
+      <th>IncomeGroup</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Aruba</td>
+      <td>ABW</td>
+      <td>10.244</td>
+      <td>78.9</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Afghanistan</td>
+      <td>AFG</td>
+      <td>35.253</td>
+      <td>5.9</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Angola</td>
+      <td>AGO</td>
+      <td>45.985</td>
+      <td>19.1</td>
+      <td>Upper middle income</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Albania</td>
+      <td>ALB</td>
+      <td>12.877</td>
+      <td>57.2</td>
+      <td>Upper middle income</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>United Arab Emirates</td>
+      <td>ARE</td>
+      <td>11.044</td>
+      <td>88.0</td>
+      <td>High income</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#Filtering is about Rows
+</span></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">stats</span><span class="p">.</span><span class="n">head</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>CountryName</th>
+      <th>CountryCode</th>
+      <th>BirthRate</th>
+      <th>InternetUsers</th>
+      <th>IncomeGroup</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Aruba</td>
+      <td>ABW</td>
+      <td>10.244</td>
+      <td>78.9</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Afghanistan</td>
+      <td>AFG</td>
+      <td>35.253</td>
+      <td>5.9</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Angola</td>
+      <td>AGO</td>
+      <td>45.985</td>
+      <td>19.1</td>
+      <td>Upper middle income</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Albania</td>
+      <td>ALB</td>
+      <td>12.877</td>
+      <td>57.2</td>
+      <td>Upper middle income</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>United Arab Emirates</td>
+      <td>ARE</td>
+      <td>11.044</td>
+      <td>88.0</td>
+      <td>High income</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">stats</span><span class="p">.</span><span class="n">InternetUsers</span> <span class="o">&lt;</span> <span class="mi">2</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0      False
+1      False
+2      False
+3      False
+4      False
+       ...  
+190    False
+191    False
+192    False
+193    False
+194    False
+Name: InternetUsers, Length: 195, dtype: bool
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Filter</span> <span class="o">=</span> <span class="n">stats</span><span class="p">.</span><span class="n">InternetUsers</span> <span class="o">&lt;</span> <span class="mi">2</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Filter</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0      False
+1      False
+2      False
+3      False
+4      False
+       ...  
+190    False
+191    False
+192    False
+193    False
+194    False
+Name: InternetUsers, Length: 195, dtype: bool
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">stats</span><span class="p">[</span><span class="n">Filter</span><span class="p">]</span>
+</code></pre></div></div>
+
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>CountryName</th>
+      <th>CountryCode</th>
+      <th>BirthRate</th>
+      <th>InternetUsers</th>
+      <th>IncomeGroup</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>11</th>
+      <td>Burundi</td>
+      <td>BDI</td>
+      <td>44.151</td>
+      <td>1.3</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>52</th>
+      <td>Eritrea</td>
+      <td>ERI</td>
+      <td>34.800</td>
+      <td>0.9</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>55</th>
+      <td>Ethiopia</td>
+      <td>ETH</td>
+      <td>32.925</td>
+      <td>1.9</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>64</th>
+      <td>Guinea</td>
+      <td>GIN</td>
+      <td>37.337</td>
+      <td>1.6</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>117</th>
+      <td>Myanmar</td>
+      <td>MMR</td>
+      <td>18.119</td>
+      <td>1.6</td>
+      <td>Lower middle income</td>
+    </tr>
+    <tr>
+      <th>127</th>
+      <td>Niger</td>
+      <td>NER</td>
+      <td>49.661</td>
+      <td>1.7</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>154</th>
+      <td>Sierra Leone</td>
+      <td>SLE</td>
+      <td>36.729</td>
+      <td>1.7</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>156</th>
+      <td>Somalia</td>
+      <td>SOM</td>
+      <td>43.891</td>
+      <td>1.5</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>172</th>
+      <td>Timor-Leste</td>
+      <td>TLS</td>
+      <td>35.755</td>
+      <td>1.1</td>
+      <td>Lower middle income</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Filter</span><span class="p">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s">'Country Name'</span><span class="p">]</span>  <span class="c1">#not working
+</span></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">stats</span><span class="p">[</span><span class="n">Filter</span><span class="p">]</span>
+</code></pre></div></div>
+
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>CountryName</th>
+      <th>CountryCode</th>
+      <th>BirthRate</th>
+      <th>InternetUsers</th>
+      <th>IncomeGroup</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>11</th>
+      <td>Burundi</td>
+      <td>BDI</td>
+      <td>44.151</td>
+      <td>1.3</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>52</th>
+      <td>Eritrea</td>
+      <td>ERI</td>
+      <td>34.800</td>
+      <td>0.9</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>55</th>
+      <td>Ethiopia</td>
+      <td>ETH</td>
+      <td>32.925</td>
+      <td>1.9</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>64</th>
+      <td>Guinea</td>
+      <td>GIN</td>
+      <td>37.337</td>
+      <td>1.6</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>117</th>
+      <td>Myanmar</td>
+      <td>MMR</td>
+      <td>18.119</td>
+      <td>1.6</td>
+      <td>Lower middle income</td>
+    </tr>
+    <tr>
+      <th>127</th>
+      <td>Niger</td>
+      <td>NER</td>
+      <td>49.661</td>
+      <td>1.7</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>154</th>
+      <td>Sierra Leone</td>
+      <td>SLE</td>
+      <td>36.729</td>
+      <td>1.7</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>156</th>
+      <td>Somalia</td>
+      <td>SOM</td>
+      <td>43.891</td>
+      <td>1.5</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>172</th>
+      <td>Timor-Leste</td>
+      <td>TLS</td>
+      <td>35.755</td>
+      <td>1.1</td>
+      <td>Lower middle income</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ourFilter</span> <span class="o">=</span> <span class="n">stats</span><span class="p">[</span><span class="n">Filter</span><span class="p">]</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ourFilter</span>
+</code></pre></div></div>
+
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>CountryName</th>
+      <th>CountryCode</th>
+      <th>BirthRate</th>
+      <th>InternetUsers</th>
+      <th>IncomeGroup</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>11</th>
+      <td>Burundi</td>
+      <td>BDI</td>
+      <td>44.151</td>
+      <td>1.3</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>52</th>
+      <td>Eritrea</td>
+      <td>ERI</td>
+      <td>34.800</td>
+      <td>0.9</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>55</th>
+      <td>Ethiopia</td>
+      <td>ETH</td>
+      <td>32.925</td>
+      <td>1.9</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>64</th>
+      <td>Guinea</td>
+      <td>GIN</td>
+      <td>37.337</td>
+      <td>1.6</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>117</th>
+      <td>Myanmar</td>
+      <td>MMR</td>
+      <td>18.119</td>
+      <td>1.6</td>
+      <td>Lower middle income</td>
+    </tr>
+    <tr>
+      <th>127</th>
+      <td>Niger</td>
+      <td>NER</td>
+      <td>49.661</td>
+      <td>1.7</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>154</th>
+      <td>Sierra Leone</td>
+      <td>SLE</td>
+      <td>36.729</td>
+      <td>1.7</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>156</th>
+      <td>Somalia</td>
+      <td>SOM</td>
+      <td>43.891</td>
+      <td>1.5</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>172</th>
+      <td>Timor-Leste</td>
+      <td>TLS</td>
+      <td>35.755</td>
+      <td>1.1</td>
+      <td>Lower middle income</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ourFilter</span><span class="p">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s">'Country Name'</span><span class="p">,</span>	<span class="s">'Country Code'</span><span class="p">,</span>	<span class="s">'Birth Rate'</span><span class="p">,</span><span class="s">'Internet Users'</span><span class="p">,</span><span class="s">'Income Group'</span><span class="p">]</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ourFilter</span>
+</code></pre></div></div>
+
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Country Name</th>
+      <th>Country Code</th>
+      <th>Birth Rate</th>
+      <th>Internet Users</th>
+      <th>Income Group</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>11</th>
+      <td>Burundi</td>
+      <td>BDI</td>
+      <td>44.151</td>
+      <td>1.3</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>52</th>
+      <td>Eritrea</td>
+      <td>ERI</td>
+      <td>34.800</td>
+      <td>0.9</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>55</th>
+      <td>Ethiopia</td>
+      <td>ETH</td>
+      <td>32.925</td>
+      <td>1.9</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>64</th>
+      <td>Guinea</td>
+      <td>GIN</td>
+      <td>37.337</td>
+      <td>1.6</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>117</th>
+      <td>Myanmar</td>
+      <td>MMR</td>
+      <td>18.119</td>
+      <td>1.6</td>
+      <td>Lower middle income</td>
+    </tr>
+    <tr>
+      <th>127</th>
+      <td>Niger</td>
+      <td>NER</td>
+      <td>49.661</td>
+      <td>1.7</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>154</th>
+      <td>Sierra Leone</td>
+      <td>SLE</td>
+      <td>36.729</td>
+      <td>1.7</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>156</th>
+      <td>Somalia</td>
+      <td>SOM</td>
+      <td>43.891</td>
+      <td>1.5</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>172</th>
+      <td>Timor-Leste</td>
+      <td>TLS</td>
+      <td>35.755</td>
+      <td>1.1</td>
+      <td>Lower middle income</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#Practice
+</span><span class="n">stats</span><span class="p">.</span><span class="n">BirthRate</span> <span class="o">&gt;</span> <span class="mi">40</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0      False
+1      False
+2       True
+3      False
+4      False
+       ...  
+190    False
+191    False
+192     True
+193     True
+194    False
+Name: BirthRate, Length: 195, dtype: bool
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Filter2</span> <span class="o">=</span> <span class="n">stats</span><span class="p">.</span><span class="n">BirthRate</span> <span class="o">&gt;</span> <span class="mi">40</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">stats</span><span class="p">[</span><span class="n">Filter2</span><span class="p">]</span>
+</code></pre></div></div>
+
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>CountryName</th>
+      <th>CountryCode</th>
+      <th>BirthRate</th>
+      <th>InternetUsers</th>
+      <th>IncomeGroup</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2</th>
+      <td>Angola</td>
+      <td>AGO</td>
+      <td>45.985</td>
+      <td>19.1</td>
+      <td>Upper middle income</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>Burundi</td>
+      <td>BDI</td>
+      <td>44.151</td>
+      <td>1.3</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>Burkina Faso</td>
+      <td>BFA</td>
+      <td>40.551</td>
+      <td>9.1</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>65</th>
+      <td>Gambia, The</td>
+      <td>GMB</td>
+      <td>42.525</td>
+      <td>14.0</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>115</th>
+      <td>Mali</td>
+      <td>MLI</td>
+      <td>44.138</td>
+      <td>3.5</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>127</th>
+      <td>Niger</td>
+      <td>NER</td>
+      <td>49.661</td>
+      <td>1.7</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>128</th>
+      <td>Nigeria</td>
+      <td>NGA</td>
+      <td>40.045</td>
+      <td>38.0</td>
+      <td>Lower middle income</td>
+    </tr>
+    <tr>
+      <th>156</th>
+      <td>Somalia</td>
+      <td>SOM</td>
+      <td>43.891</td>
+      <td>1.5</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>167</th>
+      <td>Chad</td>
+      <td>TCD</td>
+      <td>45.745</td>
+      <td>2.3</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>178</th>
+      <td>Uganda</td>
+      <td>UGA</td>
+      <td>43.474</td>
+      <td>16.2</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>192</th>
+      <td>Congo, Dem. Rep.</td>
+      <td>COD</td>
+      <td>42.394</td>
+      <td>2.2</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>193</th>
+      <td>Zambia</td>
+      <td>ZMB</td>
+      <td>40.471</td>
+      <td>15.4</td>
+      <td>Lower middle income</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">stats</span><span class="p">[</span><span class="n">stats</span><span class="p">.</span><span class="n">BirthRate</span><span class="o">&gt;</span><span class="mi">40</span><span class="p">]</span>
+</code></pre></div></div>
+
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>CountryName</th>
+      <th>CountryCode</th>
+      <th>BirthRate</th>
+      <th>InternetUsers</th>
+      <th>IncomeGroup</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2</th>
+      <td>Angola</td>
+      <td>AGO</td>
+      <td>45.985</td>
+      <td>19.1</td>
+      <td>Upper middle income</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>Burundi</td>
+      <td>BDI</td>
+      <td>44.151</td>
+      <td>1.3</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>Burkina Faso</td>
+      <td>BFA</td>
+      <td>40.551</td>
+      <td>9.1</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>65</th>
+      <td>Gambia, The</td>
+      <td>GMB</td>
+      <td>42.525</td>
+      <td>14.0</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>115</th>
+      <td>Mali</td>
+      <td>MLI</td>
+      <td>44.138</td>
+      <td>3.5</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>127</th>
+      <td>Niger</td>
+      <td>NER</td>
+      <td>49.661</td>
+      <td>1.7</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>128</th>
+      <td>Nigeria</td>
+      <td>NGA</td>
+      <td>40.045</td>
+      <td>38.0</td>
+      <td>Lower middle income</td>
+    </tr>
+    <tr>
+      <th>156</th>
+      <td>Somalia</td>
+      <td>SOM</td>
+      <td>43.891</td>
+      <td>1.5</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>167</th>
+      <td>Chad</td>
+      <td>TCD</td>
+      <td>45.745</td>
+      <td>2.3</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>178</th>
+      <td>Uganda</td>
+      <td>UGA</td>
+      <td>43.474</td>
+      <td>16.2</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>192</th>
+      <td>Congo, Dem. Rep.</td>
+      <td>COD</td>
+      <td>42.394</td>
+      <td>2.2</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>193</th>
+      <td>Zambia</td>
+      <td>ZMB</td>
+      <td>40.471</td>
+      <td>15.4</td>
+      <td>Lower middle income</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">stats</span><span class="p">[(</span><span class="n">stats</span><span class="p">.</span><span class="n">BirthRate</span> <span class="o">&gt;</span> <span class="mi">40</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">stats</span><span class="p">.</span><span class="n">InternetUsers</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">)]</span>
+</code></pre></div></div>
+
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>CountryName</th>
+      <th>CountryCode</th>
+      <th>BirthRate</th>
+      <th>InternetUsers</th>
+      <th>IncomeGroup</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>11</th>
+      <td>Burundi</td>
+      <td>BDI</td>
+      <td>44.151</td>
+      <td>1.3</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>127</th>
+      <td>Niger</td>
+      <td>NER</td>
+      <td>49.661</td>
+      <td>1.7</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>156</th>
+      <td>Somalia</td>
+      <td>SOM</td>
+      <td>43.891</td>
+      <td>1.5</td>
+      <td>Low income</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">stats</span><span class="p">[</span><span class="n">stats</span><span class="p">.</span><span class="n">IncomeGroup</span> <span class="o">==</span> <span class="s">'High income'</span><span class="p">]</span>
+</code></pre></div></div>
+
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>CountryName</th>
+      <th>CountryCode</th>
+      <th>BirthRate</th>
+      <th>InternetUsers</th>
+      <th>IncomeGroup</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Aruba</td>
+      <td>ABW</td>
+      <td>10.244</td>
+      <td>78.90</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>United Arab Emirates</td>
+      <td>ARE</td>
+      <td>11.044</td>
+      <td>88.00</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Argentina</td>
+      <td>ARG</td>
+      <td>17.716</td>
+      <td>59.90</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Antigua and Barbuda</td>
+      <td>ATG</td>
+      <td>16.447</td>
+      <td>63.40</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Australia</td>
+      <td>AUS</td>
+      <td>13.200</td>
+      <td>83.00</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>174</th>
+      <td>Trinidad and Tobago</td>
+      <td>TTO</td>
+      <td>14.590</td>
+      <td>63.80</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>180</th>
+      <td>Uruguay</td>
+      <td>URY</td>
+      <td>14.374</td>
+      <td>57.69</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>181</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>12.500</td>
+      <td>84.20</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>184</th>
+      <td>Venezuela, RB</td>
+      <td>VEN</td>
+      <td>19.842</td>
+      <td>54.90</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>185</th>
+      <td>Virgin Islands (U.S.)</td>
+      <td>VIR</td>
+      <td>10.700</td>
+      <td>45.30</td>
+      <td>High income</td>
+    </tr>
+  </tbody>
+</table>
+<p>67 rows Ã— 5 columns</p>
+</div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">stats</span><span class="p">.</span><span class="n">head</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>CountryName</th>
+      <th>CountryCode</th>
+      <th>BirthRate</th>
+      <th>InternetUsers</th>
+      <th>IncomeGroup</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Aruba</td>
+      <td>ABW</td>
+      <td>10.244</td>
+      <td>78.9</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Afghanistan</td>
+      <td>AFG</td>
+      <td>35.253</td>
+      <td>5.9</td>
+      <td>Low income</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Angola</td>
+      <td>AGO</td>
+      <td>45.985</td>
+      <td>19.1</td>
+      <td>Upper middle income</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Albania</td>
+      <td>ALB</td>
+      <td>12.877</td>
+      <td>57.2</td>
+      <td>Upper middle income</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>United Arab Emirates</td>
+      <td>ARE</td>
+      <td>11.044</td>
+      <td>88.0</td>
+      <td>High income</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">stats</span><span class="p">[(</span><span class="n">stats</span><span class="p">.</span><span class="n">BirthRate</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">stats</span><span class="p">.</span><span class="n">IncomeGroup</span> <span class="o">==</span> <span class="s">'High income'</span><span class="p">)]</span>
+</code></pre></div></div>
+
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>CountryName</th>
+      <th>CountryCode</th>
+      <th>BirthRate</th>
+      <th>InternetUsers</th>
+      <th>IncomeGroup</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Aruba</td>
+      <td>ABW</td>
+      <td>10.244</td>
+      <td>78.90000</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>United Arab Emirates</td>
+      <td>ARE</td>
+      <td>11.044</td>
+      <td>88.00000</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Argentina</td>
+      <td>ARG</td>
+      <td>17.716</td>
+      <td>59.90000</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Antigua and Barbuda</td>
+      <td>ATG</td>
+      <td>16.447</td>
+      <td>63.40000</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Australia</td>
+      <td>AUS</td>
+      <td>13.200</td>
+      <td>83.00000</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>Belgium</td>
+      <td>BEL</td>
+      <td>11.200</td>
+      <td>82.17020</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>Bahrain</td>
+      <td>BHR</td>
+      <td>15.040</td>
+      <td>90.00004</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>Bahamas, The</td>
+      <td>BHS</td>
+      <td>15.339</td>
+      <td>72.00000</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>Bermuda</td>
+      <td>BMU</td>
+      <td>10.400</td>
+      <td>95.30000</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>Barbados</td>
+      <td>BRB</td>
+      <td>12.188</td>
+      <td>73.00000</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>Brunei Darussalam</td>
+      <td>BRN</td>
+      <td>16.405</td>
+      <td>64.50000</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>Canada</td>
+      <td>CAN</td>
+      <td>10.900</td>
+      <td>85.80000</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>Switzerland</td>
+      <td>CHE</td>
+      <td>10.200</td>
+      <td>86.34000</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>32</th>
+      <td>Chile</td>
+      <td>CHL</td>
+      <td>13.385</td>
+      <td>66.50000</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>42</th>
+      <td>Cayman Islands</td>
+      <td>CYM</td>
+      <td>12.500</td>
+      <td>74.10000</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>43</th>
+      <td>Cyprus</td>
+      <td>CYP</td>
+      <td>11.436</td>
+      <td>65.45480</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>44</th>
+      <td>Czech Republic</td>
+      <td>CZE</td>
+      <td>10.200</td>
+      <td>74.11040</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>54</th>
+      <td>Estonia</td>
+      <td>EST</td>
+      <td>10.300</td>
+      <td>79.40000</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>56</th>
+      <td>Finland</td>
+      <td>FIN</td>
+      <td>10.700</td>
+      <td>91.51440</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>58</th>
+      <td>France</td>
+      <td>FRA</td>
+      <td>12.300</td>
+      <td>81.91980</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>61</th>
+      <td>United Kingdom</td>
+      <td>GBR</td>
+      <td>12.200</td>
+      <td>89.84410</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>67</th>
+      <td>Equatorial Guinea</td>
+      <td>GNQ</td>
+      <td>35.362</td>
+      <td>16.40000</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>70</th>
+      <td>Greenland</td>
+      <td>GRL</td>
+      <td>14.500</td>
+      <td>65.80000</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>72</th>
+      <td>Guam</td>
+      <td>GUM</td>
+      <td>17.389</td>
+      <td>65.40000</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>81</th>
+      <td>Ireland</td>
+      <td>IRL</td>
+      <td>15.000</td>
+      <td>78.24770</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>84</th>
+      <td>Iceland</td>
+      <td>ISL</td>
+      <td>13.400</td>
+      <td>96.54680</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>85</th>
+      <td>Israel</td>
+      <td>ISR</td>
+      <td>21.300</td>
+      <td>70.80000</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>96</th>
+      <td>Kuwait</td>
+      <td>KWT</td>
+      <td>20.575</td>
+      <td>75.46000</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>105</th>
+      <td>Lithuania</td>
+      <td>LTU</td>
+      <td>10.100</td>
+      <td>68.45290</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>106</th>
+      <td>Luxembourg</td>
+      <td>LUX</td>
+      <td>11.300</td>
+      <td>93.77650</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>107</th>
+      <td>Latvia</td>
+      <td>LVA</td>
+      <td>10.200</td>
+      <td>75.23440</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>108</th>
+      <td>Macao SAR, China</td>
+      <td>MAC</td>
+      <td>11.256</td>
+      <td>65.80000</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>126</th>
+      <td>New Caledonia</td>
+      <td>NCL</td>
+      <td>17.000</td>
+      <td>66.00000</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>130</th>
+      <td>Netherlands</td>
+      <td>NLD</td>
+      <td>10.200</td>
+      <td>93.95640</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>131</th>
+      <td>Norway</td>
+      <td>NOR</td>
+      <td>11.600</td>
+      <td>95.05340</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>133</th>
+      <td>New Zealand</td>
+      <td>NZL</td>
+      <td>13.120</td>
+      <td>82.78000</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>134</th>
+      <td>Oman</td>
+      <td>OMN</td>
+      <td>20.419</td>
+      <td>66.45000</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>141</th>
+      <td>Puerto Rico</td>
+      <td>PRI</td>
+      <td>10.800</td>
+      <td>73.90000</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>144</th>
+      <td>French Polynesia</td>
+      <td>PYF</td>
+      <td>16.393</td>
+      <td>56.80000</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>145</th>
+      <td>Qatar</td>
+      <td>QAT</td>
+      <td>11.940</td>
+      <td>85.30000</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>147</th>
+      <td>Russian Federation</td>
+      <td>RUS</td>
+      <td>13.200</td>
+      <td>67.97000</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>149</th>
+      <td>Saudi Arabia</td>
+      <td>SAU</td>
+      <td>20.576</td>
+      <td>60.50000</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>161</th>
+      <td>Slovak Republic</td>
+      <td>SVK</td>
+      <td>10.100</td>
+      <td>77.88260</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>162</th>
+      <td>Slovenia</td>
+      <td>SVN</td>
+      <td>10.200</td>
+      <td>72.67560</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>163</th>
+      <td>Sweden</td>
+      <td>SWE</td>
+      <td>11.800</td>
+      <td>94.78360</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>165</th>
+      <td>Seychelles</td>
+      <td>SYC</td>
+      <td>18.600</td>
+      <td>50.40000</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>174</th>
+      <td>Trinidad and Tobago</td>
+      <td>TTO</td>
+      <td>14.590</td>
+      <td>63.80000</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>180</th>
+      <td>Uruguay</td>
+      <td>URY</td>
+      <td>14.374</td>
+      <td>57.69000</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>181</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>12.500</td>
+      <td>84.20000</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>184</th>
+      <td>Venezuela, RB</td>
+      <td>VEN</td>
+      <td>19.842</td>
+      <td>54.90000</td>
+      <td>High income</td>
+    </tr>
+    <tr>
+      <th>185</th>
+      <td>Virgin Islands (U.S.)</td>
+      <td>VIR</td>
+      <td>10.700</td>
+      <td>45.30000</td>
+      <td>High income</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#how to get the unique categories - find categorical data
+</span><span class="n">stats</span><span class="p">.</span><span class="n">IncomeGroup</span><span class="p">.</span><span class="n">unique</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>array(['High income', 'Low income', 'Upper middle income',
+       'Lower middle income'], dtype=object)
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#quick exercise find everithing about Malta
+</span><span class="n">stats</span><span class="p">[</span><span class="n">stats</span><span class="p">.</span><span class="n">CountryName</span> <span class="o">==</span> <span class="s">'Malta'</span><span class="p">]</span>
+</code></pre></div></div>
+
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>CountryName</th>
+      <th>CountryCode</th>
+      <th>BirthRate</th>
+      <th>InternetUsers</th>
+      <th>IncomeGroup</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>116</th>
+      <td>Malta</td>
+      <td>MLT</td>
+      <td>9.5</td>
+      <td>68.9138</td>
+      <td>High income</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+</code></pre></div></div>
+:ET

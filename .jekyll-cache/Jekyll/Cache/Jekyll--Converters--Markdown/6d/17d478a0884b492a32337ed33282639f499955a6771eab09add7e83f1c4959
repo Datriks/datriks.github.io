@@ -1,0 +1,295 @@
+I"�X<h1 id="location-estimates-of-population-and-murder-rates">Location Estimates of Population and Murder Rates</h1>
+
+<h2 id="import-the-neccesary-libraries">Import the neccesary libraries</h2>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="n">tidyverse</span><span class="p">)</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="n">flextable</span><span class="p">)</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="n">janitor</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<h2 id="import-the-file-to-be-analised">Import the file to be analised</h2>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"state.csv"</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">clean_names</span><span class="p">()</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">remove_empty</span><span class="p">()</span><span class="w">
+</span></code></pre></div></div>
+
+<h2 id="analyse-the-file">Analyse the file</h2>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># glimpse is part of the tydiverse package helps to get insights about the data frame : nr of column, nr of rows, features name, features data types</span><span class="w">
+</span><span class="n">glimpse</span><span class="p">(</span><span class="n">state</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## Rows: 50
+## Columns: 4
+## $ state        &lt;chr&gt; "Alabama", "Alaska", "Arizona", "Arkansas", "Californi...
+## $ population   &lt;dbl&gt; 4779736, 710231, 6392017, 2915918, 37253956, 5029196, ...
+## $ murder_rate  &lt;dbl&gt; 5.7, 5.6, 4.7, 5.6, 4.4, 2.8, 2.4, 5.8, 5.8, 5.7, 1.8,...
+## $ abbreviation &lt;chr&gt; "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", ...
+</code></pre></div></div>
+
+<h2 id="observe-a-summary-of-the-data">Observe a summary of the data</h2>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># with the help of the summary function we can obtain a rough statistics of the features that we have to analyse for more in depth analysis see dlookr package</span><span class="w">
+</span><span class="n">summary</span><span class="p">(</span><span class="n">state</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>##     state             population        murder_rate     abbreviation      
+##  Length:50          Min.   :  563626   Min.   : 0.900   Length:50         
+##  Class :character   1st Qu.: 1833004   1st Qu.: 2.425   Class :character  
+##  Mode  :character   Median : 4436370   Median : 4.000   Mode  :character  
+##                     Mean   : 6162876   Mean   : 4.066                     
+##                     3rd Qu.: 6680312   3rd Qu.: 5.550                     
+##                     Max.   :37253956   Max.   :10.300
+</code></pre></div></div>
+
+<h2 id="computing-the-mean-trimmed-mean-and-median-for-the-population-using-r">Computing the mean, trimmed mean, and median for the population using R:</h2>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">state</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">group_by</span><span class="p">(</span><span class="n">state</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">summarise</span><span class="p">(</span><span class="n">mean.pop</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mean</span><span class="p">(</span><span class="n">population</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">arrange</span><span class="p">(</span><span class="n">desc</span><span class="p">(</span><span class="n">mean.pop</span><span class="p">))</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## # A tibble: 50 x 2
+##    state          mean.pop
+##    &lt;chr&gt;             &lt;dbl&gt;
+##  1 California     37253956
+##  2 Texas          25145561
+##  3 New York       19378102
+##  4 Florida        18801310
+##  5 Illinois       12830632
+##  6 Pennsylvania   12702379
+##  7 Ohio           11536504
+##  8 Michigan        9883640
+##  9 Georgia         9687653
+## 10 North Carolina  9535483
+## # ... with 40 more rows
+</code></pre></div></div>
+
+<h2 id="trimmed-mean-calculation">Trimmed Mean Calculation</h2>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># The average of all values after dropping a fixed number of extreme values.</span><span class="w">
+</span><span class="c1"># in ou case we drop 10% of the extreme cases</span><span class="w">
+</span><span class="n">state</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">group_by</span><span class="p">(</span><span class="n">state</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">summarise</span><span class="p">(</span><span class="n">mean.trim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mean</span><span class="p">(</span><span class="n">population</span><span class="p">,</span><span class="w"> </span><span class="n">trim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.1</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">arrange</span><span class="p">(</span><span class="n">desc</span><span class="p">(</span><span class="n">mean.trim</span><span class="p">))</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## # A tibble: 50 x 2
+##    state          mean.trim
+##    &lt;chr&gt;              &lt;dbl&gt;
+##  1 California      37253956
+##  2 Texas           25145561
+##  3 New York        19378102
+##  4 Florida         18801310
+##  5 Illinois        12830632
+##  6 Pennsylvania    12702379
+##  7 Ohio            11536504
+##  8 Michigan         9883640
+##  9 Georgia          9687653
+## 10 North Carolina   9535483
+## # ... with 40 more rows
+</code></pre></div></div>
+
+<h2 id="trimmed-mean-calculation-for-murderrate">Trimmed Mean Calculation for Murder.Rate</h2>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">state</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">group_by</span><span class="p">(</span><span class="n">state</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">summarise</span><span class="p">(</span><span class="n">mean.trim.murder</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mean</span><span class="p">(</span><span class="n">murder_rate</span><span class="p">,</span><span class="w"> </span><span class="n">trim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.1</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">arrange</span><span class="p">(</span><span class="n">desc</span><span class="p">(</span><span class="n">mean.trim.murder</span><span class="p">))</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## # A tibble: 50 x 2
+##    state          mean.trim.murder
+##    &lt;chr&gt;                     &lt;dbl&gt;
+##  1 Louisiana                  10.3
+##  2 Mississippi                 8.6
+##  3 Missouri                    6.6
+##  4 South Carolina              6.4
+##  5 Maryland                    6.1
+##  6 Nevada                      6  
+##  7 Delaware                    5.8
+##  8 Florida                     5.8
+##  9 Alabama                     5.7
+## 10 Georgia                     5.7
+## # ... with 40 more rows
+</code></pre></div></div>
+
+<h2 id="comparison-between-mean-and-trim-mean-of-population">Comparison between mean and trim mean of population</h2>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">state</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">group_by</span><span class="p">(</span><span class="n">state</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">summarise</span><span class="p">(</span><span class="n">mean.pop</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mean</span><span class="p">(</span><span class="n">population</span><span class="p">),</span><span class="w">
+            </span><span class="n">mean.trim.pop</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mean</span><span class="p">(</span><span class="n">population</span><span class="p">,</span><span class="w"> </span><span class="n">trim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.2</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">arrange</span><span class="p">(</span><span class="n">desc</span><span class="p">(</span><span class="n">mean.pop</span><span class="p">))</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## # A tibble: 50 x 3
+##    state          mean.pop mean.trim.pop
+##    &lt;chr&gt;             &lt;dbl&gt;         &lt;dbl&gt;
+##  1 California     37253956      37253956
+##  2 Texas          25145561      25145561
+##  3 New York       19378102      19378102
+##  4 Florida        18801310      18801310
+##  5 Illinois       12830632      12830632
+##  6 Pennsylvania   12702379      12702379
+##  7 Ohio           11536504      11536504
+##  8 Michigan        9883640       9883640
+##  9 Georgia         9687653       9687653
+## 10 North Carolina  9535483       9535483
+## # ... with 40 more rows
+</code></pre></div></div>
+
+<p>Claculate the median of the Population Feature</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># The value such that one-half of the data lies above and below.</span><span class="w">
+</span><span class="n">state</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">group_by</span><span class="p">(</span><span class="n">state</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">summarise</span><span class="p">(</span><span class="n">median.pop</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">median</span><span class="p">(</span><span class="n">population</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">arrange</span><span class="p">(</span><span class="n">desc</span><span class="p">(</span><span class="n">median.pop</span><span class="p">))</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## # A tibble: 50 x 2
+##    state          median.pop
+##    &lt;chr&gt;               &lt;dbl&gt;
+##  1 California       37253956
+##  2 Texas            25145561
+##  3 New York         19378102
+##  4 Florida          18801310
+##  5 Illinois         12830632
+##  6 Pennsylvania     12702379
+##  7 Ohio             11536504
+##  8 Michigan          9883640
+##  9 Georgia           9687653
+## 10 North Carolina    9535483
+## # ... with 40 more rows
+</code></pre></div></div>
+
+<h2 id="calculate-the-median-of-the">Calculate the median of the</h2>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">glimpse</span><span class="p">(</span><span class="n">state</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## Rows: 50
+## Columns: 4
+## $ state        &lt;chr&gt; "Alabama", "Alaska", "Arizona", "Arkansas", "Californi...
+## $ population   &lt;dbl&gt; 4779736, 710231, 6392017, 2915918, 37253956, 5029196, ...
+## $ murder_rate  &lt;dbl&gt; 5.7, 5.6, 4.7, 5.6, 4.4, 2.8, 2.4, 5.8, 5.8, 5.7, 1.8,...
+## $ abbreviation &lt;chr&gt; "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", ...
+</code></pre></div></div>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">state</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">group_by</span><span class="p">(</span><span class="n">state</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">summarise</span><span class="p">(</span><span class="n">median.murder</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">median</span><span class="p">(</span><span class="n">murder_rate</span><span class="p">),</span><span class="w">
+            </span><span class="n">median.pop</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">median</span><span class="p">(</span><span class="n">population</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">arrange</span><span class="p">(</span><span class="n">desc</span><span class="p">(</span><span class="n">median.murder</span><span class="p">))</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## # A tibble: 50 x 3
+##    state          median.murder median.pop
+##    &lt;chr&gt;                  &lt;dbl&gt;      &lt;dbl&gt;
+##  1 Louisiana               10.3    4533372
+##  2 Mississippi              8.6    2967297
+##  3 Missouri                 6.6    5988927
+##  4 South Carolina           6.4    4625364
+##  5 Maryland                 6.1    5773552
+##  6 Nevada                   6      2700551
+##  7 Delaware                 5.8     897934
+##  8 Florida                  5.8   18801310
+##  9 Alabama                  5.7    4779736
+## 10 Georgia                  5.7    9687653
+## # ... with 40 more rows
+</code></pre></div></div>
+
+<h2 id="load-package-to-analyse-weighted-median">Load package to analyse weighted median</h2>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#install.packages("matrixStats")</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="n">matrixStats</span><span class="p">)</span><span class="w">
+</span><span class="n">weighted.mean</span><span class="p">(</span><span class="n">state</span><span class="p">[[</span><span class="s1">'murder_rate'</span><span class="p">]],</span><span class="w"> </span><span class="n">w</span><span class="o">=</span><span class="n">state</span><span class="p">[[</span><span class="s1">'population'</span><span class="p">]])</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## [1] 4.445834
+</code></pre></div></div>
+
+<h2 id="this-evaluates-the-weighted-mean-of-murder-rate-per-individual-state">This evaluates the weighted mean of murder rate per individual state</h2>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># In order to compute the average murder rate for the country, we need to use a weighted mean or median to account for different populations in the states.</span><span class="w">
+</span><span class="n">state</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">group_by</span><span class="p">(</span><span class="n">state</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">summarise</span><span class="p">(</span><span class="n">meanpop</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">weighted.mean</span><span class="p">(</span><span class="n">murder_rate</span><span class="p">,</span><span class="w"> </span><span class="n">population</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">arrange</span><span class="p">(</span><span class="n">desc</span><span class="p">(</span><span class="n">meanpop</span><span class="p">))</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## # A tibble: 50 x 2
+##    state          meanpop
+##    &lt;chr&gt;            &lt;dbl&gt;
+##  1 Louisiana         10.3
+##  2 Mississippi        8.6
+##  3 Missouri           6.6
+##  4 South Carolina     6.4
+##  5 Maryland           6.1
+##  6 Nevada             6  
+##  7 Delaware           5.8
+##  8 Florida            5.8
+##  9 Alabama            5.7
+## 10 Georgia            5.7
+## # ... with 40 more rows
+</code></pre></div></div>
+
+<h2 id="this-evaluates-the-weighted-mean-of-murder-rate-per-all-states">This evaluates the weighted mean of murder rate per all states</h2>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">state</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">summarise</span><span class="p">(</span><span class="n">meanpop</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">weighted.mean</span><span class="p">(</span><span class="n">murder_rate</span><span class="p">,</span><span class="w"> </span><span class="n">population</span><span class="p">))</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## # A tibble: 1 x 1
+##   meanpop
+##     &lt;dbl&gt;
+## 1    4.45
+</code></pre></div></div>
+
+<h2 id="evaluates-the-weighted-median-of-murder-rate-by-state">Evaluates the weighted median of murder rate by state</h2>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">state</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">group_by</span><span class="p">(</span><span class="n">state</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">summarise</span><span class="p">(</span><span class="n">medianmurder</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">weightedMedian</span><span class="p">(</span><span class="n">murder_rate</span><span class="p">,</span><span class="w"> </span><span class="n">population</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">arrange</span><span class="p">(</span><span class="n">desc</span><span class="p">(</span><span class="n">medianmurder</span><span class="p">))</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## # A tibble: 50 x 2
+##    state          medianmurder
+##    &lt;chr&gt;                 &lt;dbl&gt;
+##  1 Louisiana              10.3
+##  2 Mississippi             8.6
+##  3 Missouri                6.6
+##  4 South Carolina          6.4
+##  5 Maryland                6.1
+##  6 Nevada                  6  
+##  7 Delaware                5.8
+##  8 Florida                 5.8
+##  9 Alabama                 5.7
+## 10 Georgia                 5.7
+## # ... with 40 more rows
+</code></pre></div></div>
+
+<h2 id="evaluation-of-weighted-median-of-murder-rate-per-all-states">Evaluation of weighted median of murder rate per all states</h2>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">state</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">summarise</span><span class="p">(</span><span class="n">medianmurder</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">weightedMedian</span><span class="p">(</span><span class="n">murder_rate</span><span class="p">,</span><span class="w"> </span><span class="n">population</span><span class="p">))</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## # A tibble: 1 x 1
+##   medianmurder
+##          &lt;dbl&gt;
+## 1          4.4
+</code></pre></div></div>
+
+<h3 id="key-ideas">Key Ideas</h3>
+
+<p>• The basic metric for location is the mean, but it can be sensitive to
+extreme values (outlier). • Other metrics (median, trimmed mean) are
+less sensitive to outliers and unusual distributions and hence are more
+robust.</p>
+:ET
