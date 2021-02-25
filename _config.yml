@@ -2,7 +2,7 @@ title:              Datriks Blog Python and R Programming
 email:              datriks@gmail.com
 description:        Data Analysis Tutorials, Tips and Tricks
 author:             Datriks
-baseurl:            ""
+baseurl:            "/startbootstrap-clean-blog-jekyll"
 url:                "https://datriks.github.io"
 
 # Social Profiles
