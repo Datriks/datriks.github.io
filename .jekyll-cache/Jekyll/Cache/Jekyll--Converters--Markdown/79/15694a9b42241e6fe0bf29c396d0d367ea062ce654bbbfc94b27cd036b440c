@@ -1,0 +1,474 @@
+I"Q�<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Impoort the libraries
+</span><span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">pandas_datareader</span> <span class="k">as</span> <span class="n">web</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">MinMaxScaler</span>
+<span class="kn">from</span> <span class="nn">keras.models</span> <span class="kn">import</span> <span class="n">Sequential</span>
+<span class="kn">from</span> <span class="nn">keras.layers</span> <span class="kn">import</span> <span class="n">Dense</span><span class="p">,</span><span class="n">LSTM</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">style</span><span class="p">.</span><span class="n">use</span><span class="p">(</span><span class="s">'fivethirtyeight'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>C:\Python\Python38\lib\site-packages\pandas_datareader\compat\__init__.py:7: FutureWarning: pandas.util.testing is deprecated. Use the functions in the public API at pandas.testing instead.
+  from pandas.util.testing import assert_frame_equal
+Using TensorFlow backend.
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#get the stoke quote
+</span><span class="n">df</span> <span class="o">=</span> <span class="n">web</span><span class="p">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s">'RBS.L'</span><span class="p">,</span><span class="n">data_source</span><span class="o">=</span><span class="s">'yahoo'</span><span class="p">,</span><span class="n">start</span><span class="o">=</span><span class="s">'2010-01-01'</span><span class="p">,</span><span class="n">end</span><span class="o">=</span><span class="s">'2020-04-29'</span><span class="p">)</span>
+<span class="c1">#show the data
+</span><span class="n">df</span>
+</code></pre></div></div>
+
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>High</th>
+      <th>Low</th>
+      <th>Open</th>
+      <th>Close</th>
+      <th>Volume</th>
+      <th>Adj Close</th>
+    </tr>
+    <tr>
+      <th>Date</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2010-01-04</th>
+      <td>321.000000</td>
+      <td>295.000000</td>
+      <td>299.000000</td>
+      <td>321.000000</td>
+      <td>11667982.0</td>
+      <td>299.654846</td>
+    </tr>
+    <tr>
+      <th>2010-01-05</th>
+      <td>355.000000</td>
+      <td>318.000000</td>
+      <td>320.000000</td>
+      <td>354.000000</td>
+      <td>18885923.0</td>
+      <td>330.460480</td>
+    </tr>
+    <tr>
+      <th>2010-01-06</th>
+      <td>384.899994</td>
+      <td>355.000000</td>
+      <td>357.200012</td>
+      <td>366.799988</td>
+      <td>19304534.0</td>
+      <td>342.409332</td>
+    </tr>
+    <tr>
+      <th>2010-01-07</th>
+      <td>371.000000</td>
+      <td>354.500000</td>
+      <td>366.799988</td>
+      <td>358.700012</td>
+      <td>14208016.0</td>
+      <td>334.847961</td>
+    </tr>
+    <tr>
+      <th>2010-01-08</th>
+      <td>366.500000</td>
+      <td>346.600006</td>
+      <td>365.500000</td>
+      <td>351.200012</td>
+      <td>10188018.0</td>
+      <td>327.846680</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>2020-04-23</th>
+      <td>1.070000</td>
+      <td>1.035500</td>
+      <td>1.049500</td>
+      <td>1.064500</td>
+      <td>19678442.0</td>
+      <td>1.064500</td>
+    </tr>
+    <tr>
+      <th>2020-04-24</th>
+      <td>1.069000</td>
+      <td>1.038500</td>
+      <td>1.063500</td>
+      <td>1.046000</td>
+      <td>19949004.0</td>
+      <td>1.046000</td>
+    </tr>
+    <tr>
+      <th>2020-04-27</th>
+      <td>1.086500</td>
+      <td>1.043000</td>
+      <td>1.082500</td>
+      <td>1.075000</td>
+      <td>22654143.0</td>
+      <td>1.075000</td>
+    </tr>
+    <tr>
+      <th>2020-04-28</th>
+      <td>1.172000</td>
+      <td>1.055500</td>
+      <td>1.071000</td>
+      <td>1.150500</td>
+      <td>38581905.0</td>
+      <td>1.150500</td>
+    </tr>
+    <tr>
+      <th>2020-04-29</th>
+      <td>120.485901</td>
+      <td>114.099998</td>
+      <td>116.050003</td>
+      <td>120.449997</td>
+      <td>33760944.0</td>
+      <td>120.449997</td>
+    </tr>
+  </tbody>
+</table>
+<p>2603 rows × 6 columns</p>
+</div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span><span class="p">.</span><span class="n">shape</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(2603, 6)
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#visualise the closing price graph
+</span><span class="n">plt</span><span class="p">.</span><span class="n">style</span><span class="p">.</span><span class="n">use</span><span class="p">(</span><span class="s">'seaborn-darkgrid'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">'Close Price History'</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s">'darkBlue'</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">22</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s">'Close'</span><span class="p">],</span><span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s">'darkBlue'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">'Date'</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s">'darkBlue'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">'Close Price GBP (£)'</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s">'darkBlue'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s">'darkBlue'</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">yticks</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s">'darkBlue'</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><img src="/img/posts/stock_price_prediction/output_3_0.png" alt="png" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#Create a new dataframe with only the Close column
+</span><span class="n">data</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nb">filter</span><span class="p">([</span><span class="s">'Close'</span><span class="p">])</span>
+<span class="c1">#Converty the dataframe to a numpy array
+</span><span class="n">dataset</span> <span class="o">=</span> <span class="n">data</span><span class="p">.</span><span class="n">values</span>
+<span class="c1">#get the number of rows to train the model on
+</span><span class="n">training_data_len</span> <span class="o">=</span> <span class="n">math</span><span class="p">.</span><span class="n">ceil</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span><span class="o">*</span><span class="p">.</span><span class="mi">8</span><span class="p">)</span>
+
+<span class="n">training_data_len</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2083
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#Scale the data
+</span><span class="n">scaler</span> <span class="o">=</span> <span class="n">MinMaxScaler</span><span class="p">(</span><span class="n">feature_range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">scaled_data</span> <span class="o">=</span> <span class="n">scaler</span><span class="p">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
+<span class="n">scaled_data</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>array([[5.52164624e-01],
+       [6.09114787e-01],
+       [6.31204527e-01],
+       ...,
+       [5.00471890e-05],
+       [1.80342280e-04],
+       [2.06062944e-01]])
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#Create the training data set
+#Create the scaled training data set
+</span><span class="n">train_data</span> <span class="o">=</span> <span class="n">scaled_data</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">training_data_len</span> <span class="p">,</span> <span class="p">:]</span>
+<span class="c1">#Split the data into x_train and y_train data sets
+</span><span class="n">x_train</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">y_train</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">60</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">train_data</span><span class="p">)):</span>
+  <span class="n">x_train</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">train_data</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">60</span><span class="p">:</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+  <span class="n">y_train</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">train_data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+  <span class="k">if</span> <span class="n">i</span><span class="o">&lt;=</span><span class="mi">60</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">x_train</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">y_train</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">()</span> 
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[array([0.55216462, 0.60911479, 0.63120453, 0.61722589, 0.60428267,
+       0.60186656, 0.59841504, 0.61256631, 0.61946936, 0.63223999,
+       0.64086881, 0.6598522 , 0.65398461, 0.6077342 , 0.59668928,
+       0.60842449, 0.59876021, 0.59099428, 0.56027573, 0.55561615,
+       0.59979568, 0.62205801, 0.60876961, 0.57339148, 0.55509844,
+       0.55302751, 0.5480228 , 0.56079344, 0.56079344, 0.53749564,
+       0.54353581, 0.57218348, 0.58322835, 0.58046712, 0.59410063,
+       0.61567266, 0.61946936, 0.62171283, 0.66451178, 0.64828962,
+       0.63137711, 0.64949762, 0.65260402, 0.67745499, 0.68832728,
+       0.67935334, 0.67089706, 0.69540291, 0.69799156, 0.73285198,
+       0.73561316, 0.74510485, 0.74976443, 0.72301511, 0.75753036,
+       0.75373367, 0.75856583, 0.76598659, 0.78514257, 0.78496998])]
+[0.7709912914434884]
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#Convert the x_train and y_train to numpy arrays
+</span><span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">x_train</span><span class="p">),</span><span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">y_train</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#reshape the data
+</span><span class="n">x_train</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">x_train</span><span class="p">,(</span><span class="n">x_train</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">x_train</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">x_train</span><span class="p">.</span><span class="n">shape</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(2023, 60, 1)
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#Build the LSTM model
+</span><span class="n">model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
+<span class="n">model</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">LSTM</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="n">return_sequences</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="n">x_train</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="mi">1</span><span class="p">)))</span>
+<span class="n">model</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">LSTM</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span><span class="n">return_sequences</span><span class="o">=</span><span class="bp">False</span><span class="p">))</span>
+<span class="n">model</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">25</span><span class="p">))</span>
+<span class="n">model</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#Compile the model
+</span><span class="n">model</span><span class="p">.</span><span class="nb">compile</span><span class="p">(</span><span class="n">optimizer</span><span class="o">=</span><span class="s">'adam'</span><span class="p">,</span> <span class="n">loss</span> <span class="o">=</span> <span class="s">'mean_squared_error'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#Train the model
+</span><span class="n">model</span><span class="p">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span><span class="n">y_train</span><span class="p">,</span><span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">epochs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Epoch 1/1
+2023/2023 [==============================] - 92s 46ms/step - loss: 0.0015
+
+
+
+
+
+&lt;keras.callbacks.callbacks.History at 0x2b2d73e6e80&gt;
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#Create the testing data set
+#Create a new array containing scaled values from index 2020 to 2080
+</span><span class="n">test_data</span> <span class="o">=</span> <span class="n">scaled_data</span><span class="p">[</span><span class="n">training_data_len</span><span class="o">-</span><span class="mi">60</span><span class="p">:</span> <span class="p">,</span> <span class="p">:]</span>
+<span class="c1">#Create the data set x_test and y_test
+</span><span class="n">x_test</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">y_test</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="n">training_data_len</span><span class="p">:,</span> <span class="p">:]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">60</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_data</span><span class="p">)):</span>
+  <span class="n">x_test</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">test_data</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">60</span><span class="p">:</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#Convert the data to a numpy array
+</span><span class="n">x_test</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">x_test</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#Reshape the data
+</span><span class="n">x_test</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">x_test</span><span class="p">,(</span><span class="n">x_test</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">x_test</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#Get the models predicted price values
+</span><span class="n">predictions</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x_test</span><span class="p">)</span>
+<span class="n">predictions</span> <span class="o">=</span> <span class="n">scaler</span><span class="p">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#Get the root mean squared error(RMSE)
+</span><span class="n">rmse</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">mean</span><span class="p">(</span><span class="n">predictions</span> <span class="o">-</span> <span class="n">y_test</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">rmse</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>4.338851857643861
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#Plot the data
+</span><span class="n">train</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:</span><span class="n">training_data_len</span><span class="p">]</span>
+<span class="n">valid</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">training_data_len</span><span class="p">:]</span>
+<span class="n">valid</span><span class="p">[</span><span class="s">'Predictions'</span><span class="p">]</span> <span class="o">=</span> <span class="n">predictions</span>
+
+<span class="c1">#Visualise the data
+</span><span class="n">plt</span><span class="p">.</span><span class="n">style</span><span class="p">.</span><span class="n">use</span><span class="p">(</span><span class="s">'seaborn-darkgrid'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">'Model'</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s">'red'</span><span class="p">,</span><span class="n">fontname</span><span class="o">=</span><span class="s">'Consolas'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">'Date'</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s">'green'</span><span class="p">,</span><span class="n">fontname</span><span class="o">=</span><span class="s">'Consolas'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">'Close Price GBP (£)'</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s">'green'</span><span class="p">,</span><span class="n">fontname</span><span class="o">=</span><span class="s">'Consolas'</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">train</span><span class="p">[</span><span class="s">'Close'</span><span class="p">],</span><span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s">'darkBlue'</span><span class="p">)</span>
+<span class="c1">#plt.plot(valid[['Close','Predictions']],linewidth=1.5)
+</span><span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">valid</span><span class="p">.</span><span class="n">Close</span><span class="p">,</span><span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s">'green'</span><span class="p">)</span> <span class="c1">#real price
+</span><span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">valid</span><span class="p">.</span><span class="n">Predictions</span><span class="p">,</span><span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s">'red'</span><span class="p">)</span> <span class="c1">#estimated price
+</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">legend</span><span class="p">([</span><span class="s">'Train'</span><span class="p">,</span><span class="s">'Val'</span><span class="p">,</span><span class="s">'Predictions'</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="s">'upper right'</span><span class="p">,</span><span class="n">frameon</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span><span class="n">fancybox</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span><span class="n">shadow</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span><span class="n">framealpha</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;ipython-input-18-4f6b43f84d62&gt;:4: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  valid['Predictions'] = predictions
+</code></pre></div></div>
+
+<p><img src="/img/posts/stock_price_prediction/output_17_1.png" alt="png" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#show the valid and predicted prices
+</span><span class="n">valid</span>
+</code></pre></div></div>
+
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Close</th>
+      <th>Predictions</th>
+    </tr>
+    <tr>
+      <th>Date</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2018-04-11</th>
+      <td>263.200012</td>
+      <td>264.371277</td>
+    </tr>
+    <tr>
+      <th>2018-04-12</th>
+      <td>264.700012</td>
+      <td>265.043915</td>
+    </tr>
+    <tr>
+      <th>2018-04-13</th>
+      <td>264.799988</td>
+      <td>265.859009</td>
+    </tr>
+    <tr>
+      <th>2018-04-16</th>
+      <td>262.899994</td>
+      <td>266.557800</td>
+    </tr>
+    <tr>
+      <th>2018-04-17</th>
+      <td>268.399994</td>
+      <td>266.636963</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>2020-04-23</th>
+      <td>1.064500</td>
+      <td>92.099251</td>
+    </tr>
+    <tr>
+      <th>2020-04-24</th>
+      <td>1.046000</td>
+      <td>70.637138</td>
+    </tr>
+    <tr>
+      <th>2020-04-27</th>
+      <td>1.075000</td>
+      <td>51.948002</td>
+    </tr>
+    <tr>
+      <th>2020-04-28</th>
+      <td>1.150500</td>
+      <td>37.720310</td>
+    </tr>
+    <tr>
+      <th>2020-04-29</th>
+      <td>120.449997</td>
+      <td>27.833059</td>
+    </tr>
+  </tbody>
+</table>
+<p>520 rows × 2 columns</p>
+</div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#Get the Quote
+</span><span class="n">rbs_quote</span> <span class="o">=</span> <span class="n">web</span><span class="p">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s">'RBS.L'</span><span class="p">,</span><span class="n">data_source</span><span class="o">=</span><span class="s">'yahoo'</span><span class="p">,</span><span class="n">start</span><span class="o">=</span><span class="s">'2010-01-01'</span><span class="p">,</span><span class="n">end</span><span class="o">=</span><span class="s">'2020-04-29'</span><span class="p">)</span>
+<span class="c1">#Create a new dataframe
+</span><span class="n">new_df</span> <span class="o">=</span> <span class="n">rbs_quote</span><span class="p">.</span><span class="nb">filter</span><span class="p">([</span><span class="s">'Close'</span><span class="p">])</span>
+<span class="c1">#Get the last 60 days closing price and convert the dataframe to an array
+</span><span class="n">last_60_days</span> <span class="o">=</span> <span class="n">new_df</span><span class="p">[</span><span class="o">-</span><span class="mi">60</span><span class="p">:].</span><span class="n">values</span>
+<span class="c1">#Scale the data to be values between 0 and 1
+</span><span class="n">last_60_days_scaled</span> <span class="o">=</span> <span class="n">scaler</span><span class="p">.</span><span class="n">transform</span><span class="p">(</span><span class="n">last_60_days</span><span class="p">)</span>
+<span class="c1">#Create an empty list
+</span><span class="n">X_test</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="c1">#Append the last 60 days to the list
+</span><span class="n">X_test</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">last_60_days_scaled</span><span class="p">)</span>
+<span class="c1">#convert the X_test dataset to a numpy array
+</span><span class="n">X_test</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="c1">#Reshape the data
+</span><span class="n">X_test</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">X_test</span><span class="p">,(</span><span class="n">X_test</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">X_test</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span>
+<span class="c1">#Get the predicted scaled price
+</span><span class="n">pred_price</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="c1">#Undo the scaling
+</span><span class="n">pred_price</span> <span class="o">=</span> <span class="n">scaler</span><span class="p">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">pred_price</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">pred_price</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[[39.654922]]
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#Get the quote
+</span><span class="n">rbs_quote2</span> <span class="o">=</span> <span class="n">web</span><span class="p">.</span><span class="n">DataReader</span><span class="p">(</span><span class="s">'RBS.L'</span><span class="p">,</span><span class="n">data_source</span><span class="o">=</span><span class="s">'yahoo'</span><span class="p">,</span><span class="n">start</span><span class="o">=</span><span class="s">'2020-04-29'</span><span class="p">,</span><span class="n">end</span><span class="o">=</span><span class="s">'2020-04-29'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">rbs_quote2</span><span class="p">[</span><span class="s">'Close'</span><span class="p">])</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Date
+2020-04-29    120.449997
+Name: Close, dtype: float64
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+</code></pre></div></div>
+
+:ET

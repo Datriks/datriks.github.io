@@ -1,0 +1,10 @@
+I"­<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#IMPORT ALL THE LIBRARIES BELOW
+</span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<span class="n">pd</span><span class="p">.</span><span class="n">set_option</span><span class="p">(</span><span class="s">'display.max_columns'</span><span class="p">,</span><span class="mi">200</span><span class="p">)</span>
+<span class="n">pd</span><span class="p">.</span><span class="n">set_option</span><span class="p">(</span><span class="s">'display.max_rows'</span><span class="p">,</span><span class="mi">200</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'StandardImport Completed'</span><span class="p">)</span>
+</code></pre></div></div>
+:ET

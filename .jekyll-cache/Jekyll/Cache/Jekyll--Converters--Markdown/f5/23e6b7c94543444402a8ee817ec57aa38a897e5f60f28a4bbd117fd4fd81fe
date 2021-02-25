@@ -1,0 +1,9 @@
+I"�<hr />
+<p>@author: Datriks
+“””
+import numpy as np
+import matplotlib.pyplot as plt
+import warnings
+warnings.simplefilter(‘ignore’)
+plt.rcParams[‘figure.figsize’] = 10,4</p>
+:ET

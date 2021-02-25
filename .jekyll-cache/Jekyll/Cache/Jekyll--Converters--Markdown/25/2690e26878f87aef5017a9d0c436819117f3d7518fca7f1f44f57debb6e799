@@ -1,0 +1,6 @@
+I"{<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#using .AT() and .IAT
+</span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="n">stats</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">'D:</span><span class="se">\\</span><span class="s">OneDrive - office365hubs.com</span><span class="se">\\</span><span class="s">.Python for data science</span><span class="se">\\</span><span class="s">Demographic-Data.csv'</span><span class="p">)</span>
+<span class="n">stats</span><span class="p">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s">'CountryName'</span><span class="p">,</span><span class="s">'CountryCode'</span><span class="p">,</span><span class="s">'BirthRate'</span><span class="p">,</span><span class="s">'InternetUsers'</span><span class="p">,</span><span class="s">'IncomeGroup'</span><span class="p">]</span>
+</code></pre></div></div>
+:ET
