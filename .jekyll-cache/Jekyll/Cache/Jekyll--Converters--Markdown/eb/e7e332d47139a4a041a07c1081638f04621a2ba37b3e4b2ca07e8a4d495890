@@ -1,4 +1,4 @@
-I"¶<h1 id="airquality-data-analysis">Airquality Data Analysis</h1>
+I"²<h1 id="airquality-data-analysis">Airquality Data Analysis</h1>
 
 <h2 id="import-the-necessary-libraries">Import the necessary libraries</h2>
 
@@ -516,7 +516,7 @@
 ## "integer" "integer" "integer" "integer" "numeric" "numeric" "numeric"
 </code></pre></div></div>
 
-<p><img src="/unnamed-chunk-9-1.png" alt="" /><!-- --></p>
+<p><img src="/img/posts/airquality/unnamed-chunk-9-1.png" alt="" /><!-- --></p>
 
 <h2 id="trend-level-analysis">Trend Level Analysis</h2>
 
@@ -524,7 +524,7 @@
   </span><span class="n">trendLevel</span><span class="p">(</span><span class="n">pollutant</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'ah'</span><span class="p">,</span><span class="w"> </span><span class="n">auto.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">T</span><span class="p">,</span><span class="w"> </span><span class="n">main</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'ah'</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
 
-<p><img src="/unnamed-chunk-10-1.png" alt="" /><!-- --></p>
+<p><img src="/img/posts/airquality/unnamed-chunk-10-1.png" alt="" /><!-- --></p>
 
 <h2 id="summary-plot-for-the-data-set-1">Summary plot for the data set</h2>
 
@@ -532,29 +532,29 @@
   </span><span class="n">trendLevel</span><span class="p">(</span><span class="n">pollutant</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'no2_s'</span><span class="p">,</span><span class="w"> </span><span class="n">auto.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">T</span><span class="p">,</span><span class="w"> </span><span class="n">main</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'no2_s'</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
 
-<p><img src="/unnamed-chunk-11-1.png" alt="" /><!-- --></p>
+<p><img src="/img/posts/airquality/unnamed-chunk-11-1.png" alt="" /><!-- --></p>
 
 <h2 id="time-variation">Time Variation</h2>
 
 <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">timeVariation</span><span class="p">(</span><span class="n">dt.final</span><span class="p">,</span><span class="w"> </span><span class="n">pollutant</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'co'</span><span class="p">,</span><span class="w"> </span><span class="n">auto.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">main</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'CO TimeVariation plot'</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
 
-<p><img src="/unnamed-chunk-12-1.png" alt="" /><!-- --></p>
+<p><img src="/img/posts/airquality/unnamed-chunk-12-1.png" alt="" /><!-- --></p>
 
 <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">timeVariation</span><span class="p">(</span><span class="n">dt.final</span><span class="p">,</span><span class="w"> </span><span class="n">pollutant</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'c6h6'</span><span class="p">,</span><span class="w"> </span><span class="n">auto.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">main</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'C6H6 TimeVariation plot'</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
 
-<p><img src="/unnamed-chunk-12-2.png" alt="" /><!-- --></p>
+<p><img src="/img/posts/airquality/unnamed-chunk-12-2.png" alt="" /><!-- --></p>
 
 <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">timeVariation</span><span class="p">(</span><span class="n">dt.final</span><span class="p">,</span><span class="w"> </span><span class="n">pollutant</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'nox'</span><span class="p">,</span><span class="w"> </span><span class="n">auto.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">main</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'NOx TimeVariation plot'</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
 
-<p><img src="/unnamed-chunk-12-3.png" alt="" /><!-- --></p>
+<p><img src="/img/posts/airquality/unnamed-chunk-12-3.png" alt="" /><!-- --></p>
 
 <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">timeVariation</span><span class="p">(</span><span class="n">dt.final</span><span class="p">,</span><span class="w"> </span><span class="n">pollutant</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'no2'</span><span class="p">,</span><span class="w"> </span><span class="n">auto.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">main</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'NO2 TimeVariation plot'</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
 
-<p><img src="/unnamed-chunk-12-4.png" alt="" /><!-- --></p>
+<p><img src="/img/posts/airquality/unnamed-chunk-12-4.png" alt="" /><!-- --></p>
 
 <h2 id="more-in-depth-analysis-witk-dlookr--diagnose">More in depth analysis witk dlookr- diagnose</h2>
 
@@ -572,11 +572,11 @@
 <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plot_outlier</span><span class="p">(</span><span class="n">dt.final</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
 
-<p><img src="Airquality-data-manipulation_files/figure-gf/unnamed-chunk-14-2.png" alt="" /><!-- --><img src="Airquality-data-manipulation_files/figure-gfm/unnamed-chunk-14-3.png" alt="" /><!-- --><img src="Airquality-data-manipulation_files/figure-gfm/unnamed-chunk-14-4.png" alt="" /><!-- --><img src="Airquality-data-manipulation_files/figure-gfm/unnamed-chunk-14-5.png" alt="" /><!-- --><img src="Airquality-data-manipulation_files/figure-gfm/unnamed-chunk-14-6.png" alt="" /><!-- --><img src="Airquality-data-manipulation_files/figure-gfm/unnamed-chunk-14-7.png" alt="" /><!-- --><img src="Airquality-data-manipulation_files/figure-gfm/unnamed-chunk-14-8.png" alt="" /><!-- --><img src="Airquality-data-manipulation_files/figure-gfm/unnamed-chunk-14-9.png" alt="" /><!-- --><img src="Airquality-data-manipulation_files/figure-gfm/unnamed-chunk-14-10.png" alt="" /><!-- --><img src="Airquality-data-manipulation_files/figure-gfm/unnamed-chunk-14-11.png" alt="" /><!-- --><img src="Airquality-data-manipulation_files/figure-gfm/unnamed-chunk-14-12.png" alt="" /><!-- --><img src="Airquality-data-manipulation_files/figure-gfm/unnamed-chunk-14-13.png" alt="" /><!-- --><img src="Airquality-data-manipulation_files/figure-gfm/unnamed-chunk-14-14.png" alt="" /><!-- --></p>
+<p><img src="/img/posts/airquality/unnamed-chunk-14-14.png" alt="" /><!-- --></p>
 
 <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plot_na_pareto</span><span class="p">(</span><span class="n">dt.final</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
-<p><img src="/unnamed-chunk-14-15.png" alt="" /><!-- --></p>
+<p><img src="/img/posts/airquality/unnamed-chunk-14-15.png" alt="" /><!-- --></p>
 
 <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plot_na_pareto</span><span class="p">(</span><span class="n">dt.final</span><span class="p">,</span><span class="w"> </span><span class="n">only_na</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">T</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>

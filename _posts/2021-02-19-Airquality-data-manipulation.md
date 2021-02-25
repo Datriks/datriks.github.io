@@ -530,7 +530,7 @@ dt.final %>%
     ##     nox_s       no2     no2_s      o3_s         t        rh        ah 
     ## "integer" "integer" "integer" "integer" "numeric" "numeric" "numeric"
 
-![](/unnamed-chunk-9-1.png)<!-- -->
+![](/img/posts/airquality/unnamed-chunk-9-1.png)<!-- -->
 
 ## Trend Level Analysis
 
@@ -539,7 +539,7 @@ dt.final %>%
   trendLevel(pollutant = 'ah', auto.text = T, main = 'ah')
 ```
 
-![](/unnamed-chunk-10-1.png)<!-- -->
+![](/img/posts/airquality/unnamed-chunk-10-1.png)<!-- -->
 
 ## Summary plot for the data set
 
@@ -548,7 +548,7 @@ dt.final %>%
   trendLevel(pollutant = 'no2_s', auto.text = T, main = 'no2_s')
 ```
 
-![](/unnamed-chunk-11-1.png)<!-- -->
+![](/img/posts/airquality/unnamed-chunk-11-1.png)<!-- -->
 
 ## Time Variation
 
@@ -556,25 +556,25 @@ dt.final %>%
 timeVariation(dt.final, pollutant = 'co', auto.text = TRUE, main = 'CO TimeVariation plot')
 ```
 
-![](/unnamed-chunk-12-1.png)<!-- -->
+![](/img/posts/airquality/unnamed-chunk-12-1.png)<!-- -->
 
 ``` r
 timeVariation(dt.final, pollutant = 'c6h6', auto.text = TRUE, main = 'C6H6 TimeVariation plot')
 ```
 
-![](/unnamed-chunk-12-2.png)<!-- -->
+![](/img/posts/airquality/unnamed-chunk-12-2.png)<!-- -->
 
 ``` r
 timeVariation(dt.final, pollutant = 'nox', auto.text = TRUE, main = 'NOx TimeVariation plot')
 ```
 
-![](/unnamed-chunk-12-3.png)<!-- -->
+![](/img/posts/airquality/unnamed-chunk-12-3.png)<!-- -->
 
 ``` r
 timeVariation(dt.final, pollutant = 'no2', auto.text = TRUE, main = 'NO2 TimeVariation plot')
 ```
 
-![](/unnamed-chunk-12-4.png)<!-- -->
+![](/img/posts/airquality/unnamed-chunk-12-4.png)<!-- -->
 
 ## More in depth analysis witk dlookr- diagnose
 
@@ -596,12 +596,12 @@ diagnose_outlier(dt.final) %>% flextable()
 plot_outlier(dt.final)
 ```
 
-![](Airquality-data-manipulation_files/figure-gf/unnamed-chunk-14-2.png)<!-- -->![](Airquality-data-manipulation_files/figure-gfm/unnamed-chunk-14-3.png)<!-- -->![](Airquality-data-manipulation_files/figure-gfm/unnamed-chunk-14-4.png)<!-- -->![](Airquality-data-manipulation_files/figure-gfm/unnamed-chunk-14-5.png)<!-- -->![](Airquality-data-manipulation_files/figure-gfm/unnamed-chunk-14-6.png)<!-- -->![](Airquality-data-manipulation_files/figure-gfm/unnamed-chunk-14-7.png)<!-- -->![](Airquality-data-manipulation_files/figure-gfm/unnamed-chunk-14-8.png)<!-- -->![](Airquality-data-manipulation_files/figure-gfm/unnamed-chunk-14-9.png)<!-- -->![](Airquality-data-manipulation_files/figure-gfm/unnamed-chunk-14-10.png)<!-- -->![](Airquality-data-manipulation_files/figure-gfm/unnamed-chunk-14-11.png)<!-- -->![](Airquality-data-manipulation_files/figure-gfm/unnamed-chunk-14-12.png)<!-- -->![](Airquality-data-manipulation_files/figure-gfm/unnamed-chunk-14-13.png)<!-- -->![](Airquality-data-manipulation_files/figure-gfm/unnamed-chunk-14-14.png)<!-- -->
+![](/img/posts/airquality/unnamed-chunk-14-14.png)<!-- -->
 
 ``` r
 plot_na_pareto(dt.final)
 ```
-![](/unnamed-chunk-14-15.png)<!-- -->
+![](/img/posts/airquality/unnamed-chunk-14-15.png)<!-- -->
 
 ``` r
 plot_na_pareto(dt.final, only_na = T)
