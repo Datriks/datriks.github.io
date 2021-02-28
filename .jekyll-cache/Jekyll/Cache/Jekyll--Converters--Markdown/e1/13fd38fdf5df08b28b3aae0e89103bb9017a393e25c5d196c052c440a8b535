@@ -1,0 +1,375 @@
+I"}^
+<h1 id="dtale-sns-car-crashes">Dtale-sns-car-crashes</h1>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">upgrade</span> <span class="n">pip</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Collecting pip
+  Downloading pip-20.3.1-py2.py3-none-any.whl (1.5 MB)
+Installing collected packages: pip
+  Attempting uninstall: pip
+    Found existing installation: pip 20.2.4
+    Uninstalling pip-20.2.4:
+      Successfully uninstalled pip-20.2.4
+Successfully installed pip-20.3.1
+Note: you may need to restart the kernel to use updated packages.
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="n">sns</span>
+<span class="kn">import</span> <span class="nn">dtale</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span> 
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="n">sns</span><span class="p">.</span><span class="n">get_dataset_names</span><span class="p">())</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>['anagrams', 'anscombe', 'attention', 'brain_networks', 'car_crashes', 'diamonds', 'dots', 'exercise', 'flights', 'fmri', 'gammas', 'geyser', 'iris', 'mpg', 'penguins', 'planets', 'tips', 'titanic']
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">sns</span><span class="p">.</span><span class="n">load_dataset</span><span class="p">(</span><span class="s">'car_crashes'</span><span class="p">)</span>
+<span class="n">df</span><span class="p">.</span><span class="n">head</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>total</th>
+      <th>speeding</th>
+      <th>alcohol</th>
+      <th>not_distracted</th>
+      <th>no_previous</th>
+      <th>ins_premium</th>
+      <th>ins_losses</th>
+      <th>abbrev</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>18.8</td>
+      <td>7.332</td>
+      <td>5.640</td>
+      <td>18.048</td>
+      <td>15.040</td>
+      <td>784.55</td>
+      <td>145.08</td>
+      <td>AL</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>18.1</td>
+      <td>7.421</td>
+      <td>4.525</td>
+      <td>16.290</td>
+      <td>17.014</td>
+      <td>1053.48</td>
+      <td>133.93</td>
+      <td>AK</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>18.6</td>
+      <td>6.510</td>
+      <td>5.208</td>
+      <td>15.624</td>
+      <td>17.856</td>
+      <td>899.47</td>
+      <td>110.35</td>
+      <td>AZ</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>22.4</td>
+      <td>4.032</td>
+      <td>5.824</td>
+      <td>21.056</td>
+      <td>21.280</td>
+      <td>827.34</td>
+      <td>142.39</td>
+      <td>AR</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>12.0</td>
+      <td>4.200</td>
+      <td>3.360</td>
+      <td>10.920</td>
+      <td>10.680</td>
+      <td>878.41</td>
+      <td>165.63</td>
+      <td>CA</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">report</span> <span class="o">=</span> <span class="n">dtale</span><span class="p">.</span><span class="n">show</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="n">report</span>
+</code></pre></div></div>
+
+<iframe width="100%" height="475" src="http://DESKTOP-5T93O8P:40001/dtale/iframe/1" frameborder="0" allowfullscreen=""></iframe>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># DISCLAIMER: 'df' refers to the data you passed in when calling 'dtale.show'
+</span>
+<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="p">(</span><span class="n">pd</span><span class="p">.</span><span class="n">DatetimeIndex</span><span class="p">,</span> <span class="n">pd</span><span class="p">.</span><span class="n">MultiIndex</span><span class="p">)):</span>
+	<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+<span class="c1"># remove any pre-existing indices for ease of use in the D-Tale code, but this is not required
+</span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="n">reset_index</span><span class="p">().</span><span class="n">drop</span><span class="p">(</span><span class="s">'index'</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s">'ignore'</span><span class="p">)</span>
+<span class="n">df</span><span class="p">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">df</span><span class="p">.</span><span class="n">columns</span><span class="p">]</span>  <span class="c1"># update columns to strings in case they are numbers
+</span>
+<span class="n">chart</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="o">~</span><span class="n">pd</span><span class="p">.</span><span class="n">isnull</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s">'total'</span><span class="p">])][[</span><span class="s">'total'</span><span class="p">]],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="c1"># main statistics
+</span><span class="n">stats</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s">'total'</span><span class="p">].</span><span class="n">describe</span><span class="p">().</span><span class="n">to_frame</span><span class="p">().</span><span class="n">T</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">stats</span>
+</code></pre></div></div>
+
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>count</th>
+      <th>mean</th>
+      <th>std</th>
+      <th>min</th>
+      <th>25%</th>
+      <th>50%</th>
+      <th>75%</th>
+      <th>max</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>total</th>
+      <td>51.0</td>
+      <td>15.790196</td>
+      <td>4.122002</td>
+      <td>5.9</td>
+      <td>12.75</td>
+      <td>15.6</td>
+      <td>18.5</td>
+      <td>23.9</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># DISCLAIMER: 'df' refers to the data you passed in when calling 'dtale.show'
+</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+
+<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="p">(</span><span class="n">pd</span><span class="p">.</span><span class="n">DatetimeIndex</span><span class="p">,</span> <span class="n">pd</span><span class="p">.</span><span class="n">MultiIndex</span><span class="p">)):</span>
+	<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+<span class="c1"># remove any pre-existing indices for ease of use in the D-Tale code, but this is not required
+</span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="n">reset_index</span><span class="p">().</span><span class="n">drop</span><span class="p">(</span><span class="s">'index'</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s">'ignore'</span><span class="p">)</span>
+<span class="n">df</span><span class="p">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">df</span><span class="p">.</span><span class="n">columns</span><span class="p">]</span>  <span class="c1"># update columns to strings in case they are numbers
+</span>
+<span class="n">chart_data</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">concat</span><span class="p">([</span>
+	<span class="n">df</span><span class="p">[</span><span class="s">'speeding'</span><span class="p">],</span>
+	<span class="n">df</span><span class="p">[</span><span class="s">'alcohol'</span><span class="p">],</span>
+<span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">chart_data</span> <span class="o">=</span> <span class="n">chart_data</span><span class="p">.</span><span class="n">sort_values</span><span class="p">([</span><span class="s">'speeding'</span><span class="p">])</span>
+<span class="n">chart_data</span> <span class="o">=</span> <span class="n">chart_data</span><span class="p">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s">'speeding'</span><span class="p">:</span> <span class="s">'x'</span><span class="p">})</span>
+<span class="n">chart_data</span> <span class="o">=</span> <span class="n">chart_data</span><span class="p">.</span><span class="n">dropna</span><span class="p">()</span>
+<span class="n">chart_data</span> <span class="o">=</span> <span class="n">chart_data</span><span class="p">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s">'x'</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">plotly.graph_objs</span> <span class="k">as</span> <span class="n">go</span>
+
+<span class="n">charts</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">charts</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">go</span><span class="p">.</span><span class="n">Bar</span><span class="p">(</span>
+	<span class="n">x</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">chart_data</span><span class="p">[</span><span class="s">'x'</span><span class="p">]))),</span>
+	<span class="n">y</span><span class="o">=</span><span class="n">chart_data</span><span class="p">[</span><span class="s">'alcohol'</span><span class="p">],</span>
+	<span class="n">hovertext</span><span class="o">=</span><span class="n">chart_data</span><span class="p">[</span><span class="s">'x'</span><span class="p">].</span><span class="n">values</span><span class="p">,</span>
+	<span class="n">hoverinfo</span><span class="o">=</span><span class="s">'y_text'</span><span class="p">)</span>
+              
+<span class="n">figure</span> <span class="o">=</span> <span class="n">go</span><span class="p">.</span><span class="n">Figure</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">charts</span><span class="p">,</span> <span class="n">layout</span><span class="o">=</span><span class="n">go</span><span class="p">.</span><span class="n">Layout</span><span class="p">({</span>
+    <span class="s">'barmode'</span><span class="p">:</span> <span class="s">'group'</span><span class="p">,</span>
+    <span class="s">'legend'</span><span class="p">:</span> <span class="p">{</span><span class="s">'orientation'</span><span class="p">:</span> <span class="s">'h'</span><span class="p">},</span>
+    <span class="s">'title'</span><span class="p">:</span> <span class="p">{</span><span class="s">'text'</span><span class="p">:</span> <span class="s">'alcohol by speeding (No Aggregation)'</span><span class="p">},</span>
+    <span class="s">'xaxis'</span><span class="p">:</span> <span class="p">{</span><span class="s">'nticks'</span><span class="p">:</span> <span class="mi">51</span><span class="p">,</span> <span class="s">'tickmode'</span><span class="p">:</span> <span class="s">'auto'</span><span class="p">,</span> <span class="s">'title'</span><span class="p">:</span> <span class="p">{</span><span class="s">'text'</span><span class="p">:</span> <span class="s">'speeding'</span><span class="p">}},</span>
+    <span class="s">'yaxis'</span><span class="p">:</span> <span class="p">{</span><span class="s">'title'</span><span class="p">:</span> <span class="p">{</span><span class="s">'text'</span><span class="p">:</span> <span class="s">'alcohol (No Aggregation)'</span><span class="p">}}}))</span>
+
+<span class="c1"># If you're having trouble viewing your chart in your notebook try passing your 'chart' into this snippet:
+</span>
+<span class="c1"># from plotly.offline import iplot, init_notebook_mode
+</span>
+<span class="c1"># init_notebook_mode(connected=True)
+# chart.pop('id', None) # for some reason iplot does not like 'id'
+# iplot(chart)
+</span></code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  File "&lt;ipython-input-18-ee26758b6fee&gt;", line 30
+    figure = go.Figure(data=charts, layout=go.Layout({
+    ^
+SyntaxError: invalid syntax
+
+
+
+Exception on /dtale/charts/_dash-update-component [POST]
+Traceback (most recent call last):
+  File "C:\Python\Python38\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Python\Python38\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Python\Python38\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Python\Python38\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "C:\Python\Python38\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Python\Python38\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "C:\Python\Python38\lib\site-packages\dash\dash.py", line 1076, in dispatch
+    response.set_data(func(*args, outputs_list=outputs_list))
+  File "C:\Python\Python38\lib\site-packages\dash\dash.py", line 1007, in add_context
+    output_value = func(*args, **kwargs)  # %% callback invoked %%
+  File "C:\Python\Python38\lib\site-packages\dtale\dash_application\views.py", line 851, in group_values
+    group_vals = build_group_val_options(group_vals, group_cols)
+  File "C:\Python\Python38\lib\site-packages\dtale\dash_application\layout\layout.py", line 711, in build_group_val_options
+    group_vals = find_group_vals(df, group_cols)
+  File "C:\Python\Python38\lib\site-packages\dtale\charts\utils.py", line 651, in find_group_vals
+    group_vals, _ = retrieve_chart_data(df, group_cols)
+  File "C:\Python\Python38\lib\site-packages\dtale\charts\utils.py", line 246, in retrieve_chart_data
+    all_data = pd.concat(all_data, axis=1)
+  File "C:\Python\Python38\lib\site-packages\pandas\core\reshape\concat.py", line 271, in concat
+    op = _Concatenator(
+  File "C:\Python\Python38\lib\site-packages\pandas\core\reshape\concat.py", line 329, in __init__
+    raise ValueError("No objects to concatenate")
+ValueError: No objects to concatenate
+
+
+2020-12-06 10:11:25,809 - ERROR    - Exception on /dtale/charts/_dash-update-component [POST]
+Traceback (most recent call last):
+  File "C:\Python\Python38\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Python\Python38\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Python\Python38\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Python\Python38\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "C:\Python\Python38\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Python\Python38\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "C:\Python\Python38\lib\site-packages\dash\dash.py", line 1076, in dispatch
+    response.set_data(func(*args, outputs_list=outputs_list))
+  File "C:\Python\Python38\lib\site-packages\dash\dash.py", line 1007, in add_context
+    output_value = func(*args, **kwargs)  # %% callback invoked %%
+  File "C:\Python\Python38\lib\site-packages\dtale\dash_application\views.py", line 851, in group_values
+    group_vals = build_group_val_options(group_vals, group_cols)
+  File "C:\Python\Python38\lib\site-packages\dtale\dash_application\layout\layout.py", line 711, in build_group_val_options
+    group_vals = find_group_vals(df, group_cols)
+  File "C:\Python\Python38\lib\site-packages\dtale\charts\utils.py", line 651, in find_group_vals
+    group_vals, _ = retrieve_chart_data(df, group_cols)
+  File "C:\Python\Python38\lib\site-packages\dtale\charts\utils.py", line 246, in retrieve_chart_data
+    all_data = pd.concat(all_data, axis=1)
+  File "C:\Python\Python38\lib\site-packages\pandas\core\reshape\concat.py", line 271, in concat
+    op = _Concatenator(
+  File "C:\Python\Python38\lib\site-packages\pandas\core\reshape\concat.py", line 329, in __init__
+    raise ValueError("No objects to concatenate")
+ValueError: No objects to concatenate
+
+
+Exception on /dtale/charts/_dash-update-component [POST]
+Traceback (most recent call last):
+  File "C:\Python\Python38\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Python\Python38\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Python\Python38\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Python\Python38\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "C:\Python\Python38\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Python\Python38\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "C:\Python\Python38\lib\site-packages\dash\dash.py", line 1076, in dispatch
+    response.set_data(func(*args, outputs_list=outputs_list))
+  File "C:\Python\Python38\lib\site-packages\dash\dash.py", line 1007, in add_context
+    output_value = func(*args, **kwargs)  # %% callback invoked %%
+  File "C:\Python\Python38\lib\site-packages\dtale\dash_application\views.py", line 851, in group_values
+    group_vals = build_group_val_options(group_vals, group_cols)
+  File "C:\Python\Python38\lib\site-packages\dtale\dash_application\layout\layout.py", line 711, in build_group_val_options
+    group_vals = find_group_vals(df, group_cols)
+  File "C:\Python\Python38\lib\site-packages\dtale\charts\utils.py", line 651, in find_group_vals
+    group_vals, _ = retrieve_chart_data(df, group_cols)
+  File "C:\Python\Python38\lib\site-packages\dtale\charts\utils.py", line 246, in retrieve_chart_data
+    all_data = pd.concat(all_data, axis=1)
+  File "C:\Python\Python38\lib\site-packages\pandas\core\reshape\concat.py", line 271, in concat
+    op = _Concatenator(
+  File "C:\Python\Python38\lib\site-packages\pandas\core\reshape\concat.py", line 329, in __init__
+    raise ValueError("No objects to concatenate")
+ValueError: No objects to concatenate
+
+
+2020-12-06 10:11:32,796 - ERROR    - Exception on /dtale/charts/_dash-update-component [POST]
+Traceback (most recent call last):
+  File "C:\Python\Python38\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Python\Python38\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Python\Python38\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Python\Python38\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "C:\Python\Python38\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Python\Python38\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "C:\Python\Python38\lib\site-packages\dash\dash.py", line 1076, in dispatch
+    response.set_data(func(*args, outputs_list=outputs_list))
+  File "C:\Python\Python38\lib\site-packages\dash\dash.py", line 1007, in add_context
+    output_value = func(*args, **kwargs)  # %% callback invoked %%
+  File "C:\Python\Python38\lib\site-packages\dtale\dash_application\views.py", line 851, in group_values
+    group_vals = build_group_val_options(group_vals, group_cols)
+  File "C:\Python\Python38\lib\site-packages\dtale\dash_application\layout\layout.py", line 711, in build_group_val_options
+    group_vals = find_group_vals(df, group_cols)
+  File "C:\Python\Python38\lib\site-packages\dtale\charts\utils.py", line 651, in find_group_vals
+    group_vals, _ = retrieve_chart_data(df, group_cols)
+  File "C:\Python\Python38\lib\site-packages\dtale\charts\utils.py", line 246, in retrieve_chart_data
+    all_data = pd.concat(all_data, axis=1)
+  File "C:\Python\Python38\lib\site-packages\pandas\core\reshape\concat.py", line 271, in concat
+    op = _Concatenator(
+  File "C:\Python\Python38\lib\site-packages\pandas\core\reshape\concat.py", line 329, in __init__
+    raise ValueError("No objects to concatenate")
+ValueError: No objects to concatenate
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+</code></pre></div></div>
+:ET
